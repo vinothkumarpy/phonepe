@@ -24,12 +24,12 @@ cursor=mydb.cursor()
 
 SELECT = option_menu(
     menu_title=None,
-    options=['About' , 'Home' , 'Basic insights' , 'contact'],
+    options=['About' , 'Home' , 'Basic insights' ],
     icons=['bar_chart' , 'house' , 'toggles' , 'at'],
     default_index=2,
     orientation='Horizontal',
-    styles={'Container':{'padding': '0!important' , 'background-colour' : 'white' , 'size' : 'cover','width' : '100%' },
-            'icon' : {'colour' : 'black' , 'font-size' : '20px'},
+    styles={'Container':{'padding': '0!important' , 'background-colour' : 'black' , 'size' : 'cover','width' : '100%' },
+            'icon' : {'colour' : 'white' , 'font-size' : '20px'},
             'navi-link': {'font-size' : '20px', 'text-align' : 'center' , 'margin' : '-2px' , '--hover-color' : '#6F3AD'},
             'nav-link-selected':{'background-color':'#6F36AD'}})
 
@@ -40,7 +40,7 @@ SELECT = option_menu(
 
 if SELECT == "Basic insights":
     st.title("BASIC INSIGHTS")
-    st.write("----")
+    st.write("-----")
     st.subheader("Let's know some basic insights about the data")
     options = ["--select--",
                "Top 10 states based on year and amount of transaction",
@@ -163,7 +163,7 @@ from streamlit_extras.add_vertical_space import add_vertical_space
 
 if SELECT == "Home":
     col1,col2, = st.columns(2)
-    col1.image(Image.open(r"D:\vs_code\images.jpg"),width = 300)
+    col1.image(Image.open(r"D:\vs_code\images.jpg"),width = 400)
     with col1:
         st.subheader("PhonePe  is an Indian digital payments and financial technology company headquartered in Bengaluru, Karnataka, India. PhonePe was founded in December 2015, by Sameer Nigam, Rahul Chari and Burzin Engineer. The PhonePe app, based on the Unified Payments Interface (UPI), went live in August 2016. It is owned by Flipkart, a subsidiary of Walmart.")
         st.download_button("DOWNLOAD THE APP NOW", "https://www.phonepe.com/app-download/")
@@ -189,7 +189,7 @@ if SELECT == "About":
     with col1:
         st.title("THE BEAT OF PHONEPE")
         st.write("---")
-        st.subheader("Phonepe became a leading digital payments company")
+        st.subheader("Phonepe became a one of the trending digital payments company")
         st.image(Image.open(r'D:\vs_code\phone_pe.webp'),width = 400)
         with open(r"D:\vs_code\PhonePe_Pulse_BCG_report.pdf","rb") as f:
             data = f.read()
@@ -203,27 +203,7 @@ if SELECT == "About":
 
 
 
-if SELECT == "Contact":
-    name = "Vinoth Kumar"
-    mail = (f'{"Mail :"}  {"vinoharish8799@gmail.com"}')
-    description = "An Aspiring DATA-SCIENTIST..!"
-    social_media = {
-        "GITHUB": "https://github.com/omkarm0542",
-        "LINKEDIN": "https://www.linkedin.com/in/omkar-maurya/",
-        "INSTAGRAM": "https://www.instagram.com/omkaraksh/",
-        }
-    
-    col1, col2, col3 = st.columns(3)
-    col3.image(Image.open("D:\vs_code\InShot_20230325_182113987.jpg"), width=350)
-    with col2:
-        st.title('Phonepe Pulse data visualisation')
-        st.write("The goal of this project is to extract data from the Phonepe pulse Github repository, transform and clean the data, insert it into a MySQL database, and create a live geo visualization dashboard using Streamlit and Plotly in Python. The dashboard will display the data in an interactive and visually appealing manner, with at least 10 different dropdown options for users to select different facts and figures to display. The solution must be secure, efficient, and user-friendly, providing valuable insights and information about the data in the Phonepe pulse Github repository.")
-        st.write("---")
-        st.subheader(mail)
-    st.write("#")
-    cols = st.columns(len(social_media))
-    for index, (platform, link) in enumerate(social_media.items()):
-        cols[index].write(f"[{platform}]({link})")
+
 
 
         # MENU 4 - ABOUT
@@ -241,15 +221,10 @@ if SELECT == "About":
         st.write("##### PhonePe is India's leading fintech platform with over 300 million registered users. Using PhonePe, users can send and receive money, recharge mobile, DTH, pay at stores, make utility payments, buy gold and make investments. PhonePe forayed into financial services in 2017 with the launch of Gold providing users with a safe and convenient option to buy 24-karat gold securely on its platform. PhonePe has since launched several Mutual Funds and Insurance products like tax-saving funds, liquid funds, international travel insurance and Corona Care, a dedicated insurance product for the COVID-19 pandemic among others. PhonePe also launched its Switch platform in 2018, and today its customers can place orders on over 600 apps directly from within the PhonePe mobile app. PhonePe is accepted at 20+ million merchant outlets across Bharat")
         
         st.write("**:violet[My Project GitHub link]** ⬇️")
-        st.write("https://github.com/IamJafar/Phonepe_Pulse_Data_Visualization")
+        st.write("https://github.com/vinothkumarpy/phonepe")
         st.write("**:violet[Image and content source]** ⬇️")
-        st.write("https://www.prnewswire.com/in/news-releases/phonepe-launches-the-pulse-of-digital-payments-india-s-first-interactive-geospatial-website-888262738.html")
-        
-    with col2:
-        st.write(" ")
-        st.write(" ")
-        st.write(" ")
-        st.write(" ")
+        st.write("https://www.businesstoday.in/latest/corporate/story/phonepe-launches-interactive-geospatial-site-pulse-305744-2021-09-02")
+
         
 
 
