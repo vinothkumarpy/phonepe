@@ -4,7 +4,6 @@ import os as os
 import mysql.connector
 import os
 import json
-from streamlit_option_menu import option_menu
 
 
 data=open(r'D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state\andaman-&-nicobar-islands\2018\1.json','r')
