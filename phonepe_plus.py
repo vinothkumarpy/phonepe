@@ -1,20 +1,17 @@
 import pandas as pd
 import json
 import os as os
-import mysql.connector as sql
-import streamlit as st
-import plotly.express as px
+import mysql.connector
 import os
 import json
 from streamlit_option_menu import option_menu
-from PIL import Image
 
 
 data=open(r'D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state\andaman-&-nicobar-islands\2018\1.json','r')
 js=json.load(data)
 print(js)
 
-
+#CREATE DF df_Agg_Trans
 
 path=r"D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state"
 Agg_state_list=os.listdir(path)
@@ -53,6 +50,7 @@ print(df_Agg_Trans)
 
 
 #Agg_User
+
 path_2=r"D:\vs_code\pulse-master\data\aggregated\user\country\india\state"
 Agg_userstate_list=os.listdir(path_2)
 Agg_userstate_list
@@ -127,6 +125,7 @@ df_map_trans = pd.DataFrame(clm_3)
 print(df_map_trans)
 
 #map_user
+
 path_4=r"D:\vs_code\pulse-master\data\map\user\hover\country\india\state"
 map_user_state_list=os.listdir(path_4)
 map_user_state_list
@@ -197,6 +196,7 @@ df_top_trans = pd.DataFrame(clm_5)
 df_top_trans
 
 #top user
+
 path_6=r'D:\vs_code\pulse-master\data\top\user\country\india\state'
 top_user_state_list=os.listdir(path_6)
 top_user_state_list
@@ -271,21 +271,21 @@ mydb = mysql.connector.connect(
   host = "localhost",
   user = "root",
   password = "vino8799",
-  database = "phonepe_pulse__"
+  database = "phonepe_pulsedb"
 )
 
 # Create a new database and use
 mycursor = mydb.cursor()
-mycursor.execute("CREATE DATABASE IF NOT EXISTS phonepe_pulse__")
+mycursor.execute("CREATE DATABASE IF NOT EXISTS phonepe_pulse_db")
 
 # Close the cursor and database connection
 mycursor.close()
 mydb.close()
 
+#create engine to connect and insert the df one by one
+engine = create_engine('mysql+mysqlconnector://root:vino8799@localhost/phonepe_pulse_db', echo=False)
 
-engine = create_engine('mysql+mysqlconnector://root:vino8799@localhost/phonepe_pulse__', echo=False)
-
-#insert table one into sql 
+#insert all dataframes in to sql
 df_Agg_Trans.to_sql('aggregated_transaction', engine, if_exists = 'replace', index=False,   
                                  dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
                                        'Year': sqlalchemy.types.Integer, 
@@ -294,7 +294,7 @@ df_Agg_Trans.to_sql('aggregated_transaction', engine, if_exists = 'replace', ind
                                        'Transaction_count': sqlalchemy.types.Integer,
                                        'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
 
-#inser all table in to sql
+
 
 # 2
 df_Agg_user.to_sql('aggregated_user', engine, if_exists = 'replace', index=False,
@@ -338,13 +338,3 @@ df_top_user.to_sql('top_user', engine, if_exists = 'replace', index=False,
                           'Quater': sqlalchemy.types.Integer,                           
                           'District_Pincode': sqlalchemy.types.Integer, 
                           'Registered_User': sqlalchemy.types.Integer,})
-
-
-
-
-
-
-
-
-
-
