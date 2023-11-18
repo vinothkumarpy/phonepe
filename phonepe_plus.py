@@ -4,17 +4,18 @@ import os as os
 import mysql.connector
 import os
 import json
+from streamlit_option_menu import option_menu
+
 
 
 data=open(r'D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state\andaman-&-nicobar-islands\2018\1.json','r')
 js=json.load(data)
 print(js)
 
-#CREATE DF df_Agg_Trans
+
 
 path=r"D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state"
 Agg_state_list=os.listdir(path)
-Agg_state_list
 
 
 clm={'State':[], 'Year':[],'Quater':[],'Transacion_type':[], 'Transacion_count':[], 'Transacion_amount':[]}
@@ -49,10 +50,8 @@ print(df_Agg_Trans)
 
 
 #Agg_User
-
 path_2=r"D:\vs_code\pulse-master\data\aggregated\user\country\india\state"
 Agg_userstate_list=os.listdir(path_2)
-Agg_userstate_list
 
 clm_2={'State': [], 'Year': [], 'Quarter': [], 'Brands': [], 'User_Count': [], 'User_Percentage': []}
 
@@ -90,8 +89,6 @@ print(df_Agg_user)
 
 path_3=r"D:\vs_code\pulse-master\data\map\transaction\hover\country\india\state"
 map_trans_state_list=os.listdir(path_2)
-map_trans_state_list
-
 
 clm_3 = {'State': [], 'Year': [], 'Quarter': [], 'District': [], 'Transaction_Count': [], 'Transaction_Amount': []}
 
@@ -124,10 +121,9 @@ df_map_trans = pd.DataFrame(clm_3)
 print(df_map_trans)
 
 #map_user
-
 path_4=r"D:\vs_code\pulse-master\data\map\user\hover\country\india\state"
 map_user_state_list=os.listdir(path_4)
-map_user_state_list
+
 
 clm_4= {"State": [], "Year": [], "Quarter": [], "District": [], "Registered_User": []}
 
@@ -162,7 +158,7 @@ print(df_map_user)
 
 path_5=r"D:\vs_code\pulse-master\data\top\transaction\country\india\state"
 top_trans_state_list=os.listdir(path_5)
-top_trans_state_list
+
 
 clm_5= {'State': [], 'Year': [], 'Quarter': [], 'District_Pincode': [], 'Transaction_count': [], 'Transaction_amount': []}
 
@@ -192,13 +188,11 @@ for i in top_trans_state_list:
 
 df_top_trans = pd.DataFrame(clm_5)
 
-df_top_trans
 
 #top user
-
 path_6=r'D:\vs_code\pulse-master\data\top\user\country\india\state'
 top_user_state_list=os.listdir(path_6)
-top_user_state_list
+
 
 clm_6 = {'State': [], 'Year': [], 'Quarter': [], 'District_Pincode': [], 'Registered_User': []}
 
@@ -225,7 +219,7 @@ for i in top_user_state_list:
                 clm_6['Registered_User'].append(registeredUser)
                 
 df_top_user = pd.DataFrame(clm_6)
-df_top_user
+
 
 #--------------------------->>>>>>>>>>>>>>------------------------------->>>>>>>>>>>>>>
 
@@ -281,59 +275,66 @@ mycursor.execute("CREATE DATABASE IF NOT EXISTS phonepe_pulse_db")
 mycursor.close()
 mydb.close()
 
-#create engine to connect and insert the df one by one
+
 engine = create_engine('mysql+mysqlconnector://root:vino8799@localhost/phonepe_pulse_db', echo=False)
 
-#insert all dataframes in to sql
-df_Agg_Trans.to_sql('aggregated_transaction', engine, if_exists = 'replace', index=False,   
-                                 dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
-                                       'Year': sqlalchemy.types.Integer, 
-                                       'Quater': sqlalchemy.types.Integer, 
-                                       'Transaction_type': sqlalchemy.types.VARCHAR(length=50), 
-                                       'Transaction_count': sqlalchemy.types.Integer,
-                                       'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
+#insert table one into sql 
+data_type={'State': sqlalchemy.types.VARCHAR(length=50), 
+                          'Year': sqlalchemy.types.Integer, 
+                          'Quater': sqlalchemy.types.Integer, 
+                          'Transaction_type': sqlalchemy.types.VARCHAR(length=50), 
+                          'Transaction_count': sqlalchemy.types.Integer,
+                          'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)}
+
+df_Agg_Trans.to_sql('aggregated_transaction', engine, if_exists = 'replace', index=False,dtype=data_type)
 
 
+#inser all table in to sql
 
 # 2
-df_Agg_user.to_sql('aggregated_user', engine, if_exists = 'replace', index=False,
-                          dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
-                                 'Year': sqlalchemy.types.Integer, 
-                                 'Quater': sqlalchemy.types.Integer,
-                                 'Brands': sqlalchemy.types.VARCHAR(length=50), 
-                                 'User_Count': sqlalchemy.types.Integer, 
-                                 'User_Percentage': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
+data_type_2={'State': sqlalchemy.types.VARCHAR(length=50),
+                          'Year': sqlalchemy.types.Integer, 
+                          'Quater': sqlalchemy.types.Integer,
+                          'Brands': sqlalchemy.types.VARCHAR(length=50), 
+                          'User_Count': sqlalchemy.types.Integer, 
+                          'User_Percentage': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)}
 
-# 3                       
-df_map_trans.to_sql('map_transaction', engine, if_exists = 'replace', index=False,
-                          dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+df_Agg_user.to_sql('aggregated_user', engine, if_exists = 'replace', index=False,dtype=data_type_2)
+
+# 3  
+data_type_3={'State': sqlalchemy.types.VARCHAR(length=50), 
                                  'Year': sqlalchemy.types.Integer, 
                                  'Quater': sqlalchemy.types.Integer, 
                                  'District': sqlalchemy.types.VARCHAR(length=50), 
                                  'Transaction_Count': sqlalchemy.types.Integer, 
-                                 'Transaction_Amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
+                                 'Transaction_Amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)} 
+                    
+df_map_trans.to_sql('map_transaction', engine, if_exists = 'replace', index=False,dtype=data_type_3)
 
 # 4
-df_map_user.to_sql('map_user', engine, if_exists = 'replace', index=False,
-                   dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
-                          'Year': sqlalchemy.types.Integer, 
-                          'Quater': sqlalchemy.types.Integer, 
-                          'District': sqlalchemy.types.VARCHAR(length=50), 
-                          'Registered_User': sqlalchemy.types.Integer, })
+data_type_4={'State': sqlalchemy.types.VARCHAR(length=50),
+             'Year': sqlalchemy.types.Integer, 
+             'Quater': sqlalchemy.types.Integer, 
+             'District': sqlalchemy.types.VARCHAR(length=50), 
+             'Registered_User': sqlalchemy.types.Integer, }
 
-# 5                  
-df_top_trans.to_sql('top_transaction', engine, if_exists = 'replace', index=False,
-                         dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+df_map_user.to_sql('map_user', engine, if_exists = 'replace', index=False,dtype=data_type_4)
+
+# 5 
+data_type_5={'State': sqlalchemy.types.VARCHAR(length=50), 
                                 'Year': sqlalchemy.types.Integer, 
                                 'Quater': sqlalchemy.types.Integer,   
                                 'District_Pincode': sqlalchemy.types.Integer,
                                 'Transaction_count': sqlalchemy.types.Integer, 
-                                'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
+                                'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)}   
+              
+df_top_trans.to_sql('top_transaction', engine, if_exists = 'replace', index=False,dtype=data_type_5)
 
 # 6
-df_top_user.to_sql('top_user', engine, if_exists = 'replace', index=False,
-                   dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+data_type_6={'State': sqlalchemy.types.VARCHAR(length=50), 
                           'Year': sqlalchemy.types.Integer, 
                           'Quater': sqlalchemy.types.Integer,                           
                           'District_Pincode': sqlalchemy.types.Integer, 
-                          'Registered_User': sqlalchemy.types.Integer,})
+                          'Registered_User': sqlalchemy.types.Integer,}
+
+df_top_user.to_sql('top_user', engine, if_exists = 'replace', index=False,dtype=data_type_6)
