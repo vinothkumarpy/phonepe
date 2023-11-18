@@ -5,6 +5,7 @@ import streamlit as st
 import plotly.express as px
 from streamlit_option_menu import option_menu
 from PIL import Image
+import streamlit as st
 
 icon = Image.open(r"D:\vs_code\phonepe_pulse\images.jpg")
 st.set_page_config(page_title= "Phonepe Pulse Data Visualization | By Vinoth Kumar",
@@ -20,12 +21,11 @@ mydb = mysql.connect(
   host = "localhost",
   user = "root",
   password = "vino8799",
-  database = "phonepe_pulsedb"
+  database = "phonepe_pulse_db"
 )
 
 # Create a new database and use
 cursor = mydb.cursor()
-# create option manu
 
 SELECT = option_menu(
     menu_title=None,
@@ -188,7 +188,7 @@ if SELECT == "Contact":
     name = " VINOTH KUMAR "
     mail = (f'{"Mail :"}  {"vinoharish8799@gmail.com"}')
     social_media = {"GITHUB": "https://github.com/vinothkumarpy",
-                    'INSTAGRAM' :'https://www.instagram.com/_thenameis_vk_/'}
+                    'LINKED_IN' :'https://www.instagram.com/_thenameis_vk_/'}
     col1, col2 = st.columns(2)
     with col1:
         st.image(r'phonepe_pulse/logo2.png')
