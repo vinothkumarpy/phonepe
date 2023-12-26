@@ -1,215 +1,337 @@
-# Importing Libraries
 import pandas as pd
-import mysql.connector as mysql
-import streamlit as st
+import json
+import os as os
+import mysql.connector as sql
 import plotly.express as px
-from streamlit_option_menu import option_menu
+import os
+import json
 from PIL import Image
-import streamlit as st
 
-icon = Image.open(r"D:\vs_code\phonepe_pulse\images.jpg")
-st.set_page_config(page_title= "Phonepe Pulse Data Visualization | By Vinoth Kumar",
-                   page_icon= icon,
-                   layout= "wide",
-                   initial_sidebar_state= "expanded",
-                   menu_items={'About': """# This dashboard app is created by *Vinoth Kumar*!
-                                        Data has been cloned from Phonepe Pulse Github Repo"""})
 
-st.sidebar.header(":wave: :violet[**Hello! Welcome to the dashboard**]")
+data=open(r'D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state\andaman-&-nicobar-islands\2018\1.json','r')
+js=json.load(data)
+print(js)
 
-mydb = mysql.connect(
+
+path=r"D:\vs_code\pulse-master\data\aggregated\transaction\country\india\state"
+Agg_state_list=os.listdir(path)
+Agg_state_list
+
+
+clm={'State':[], 'Year':[],'Quater':[],'Transacion_type':[], 'Transacion_count':[], 'Transacion_amount':[]}
+
+
+for i in Agg_state_list:
+    p_i=path+"/"+i
+    Agg_yr=os.listdir(p_i)
+    
+    for j in Agg_yr:
+        p_j=p_i+"/"+j
+        Agg_yr_list=os.listdir(p_j)
+        
+        for k in Agg_yr_list:
+            p_k=p_j+'/'+k
+            Data=open(p_k,'r')
+            D=json.load(Data)
+            
+            for z in D['data']['transactionData']:
+              Name=z['name']
+              count=z['paymentInstruments'][0]['count']
+              amount=z['paymentInstruments'][0]['amount']
+              clm['Transacion_type'].append(Name)
+              clm['Transacion_count'].append(count)
+              clm['Transacion_amount'].append(amount)
+              clm['State'].append(i)
+              clm['Year'].append(j)
+              clm['Quater'].append(int(k.strip('.json')))
+#Succesfully created a dataframe
+df_Agg_Trans=pd.DataFrame(clm)
+print(df_Agg_Trans)
+
+
+#Agg_User
+path_2=r"D:\vs_code\pulse-master\data\aggregated\user\country\india\state"
+Agg_userstate_list=os.listdir(path_2)
+Agg_userstate_list
+
+clm_2={'State': [], 'Year': [], 'Quarter': [], 'Brands': [], 'User_Count': [], 'User_Percentage': []}
+
+for i in Agg_userstate_list:
+    p_i = path_2 + "/" + i 
+    Agg_yr = os.listdir(p_i)
+
+    for j in Agg_yr:
+        p_j = p_i + "/" +  j 
+        Agg_yr_list = os.listdir(p_j)
+
+        for k in Agg_yr_list:
+            p_k = p_j + "/" + k
+            Data = open(p_k, 'r')
+            B = json.load(Data)
+            
+            try:
+                for l in B["data"]["usersByDevice"]:
+                    brand_name = l["brand"]
+                    count_ = l["count"]
+                    ALL_percentage = l["percentage"]
+                    clm_2["State"].append(i)
+                    clm_2["Year"].append(j)
+                    clm_2["Quarter"].append(int(k.strip('.json')))
+                    clm_2["Brands"].append(brand_name)
+                    clm_2["User_Count"].append(count_)
+                    clm_2["User_Percentage"].append(ALL_percentage*100)
+            except:
+                pass
+
+df_Agg_user = pd.DataFrame(clm_2)
+print(df_Agg_user)
+
+# map trans
+
+path_3=r"D:\vs_code\pulse-master\data\map\transaction\hover\country\india\state"
+map_trans_state_list=os.listdir(path_2)
+map_trans_state_list
+
+
+clm_3 = {'State': [], 'Year': [], 'Quarter': [], 'District': [], 'Transaction_Count': [], 'Transaction_Amount': []}
+
+for i in map_trans_state_list:
+    p_i = path_3 + "/" + i  
+    Agg_yr = os.listdir(p_i)
+
+    for j in Agg_yr:
+        p_j = p_i + "/" + j 
+        Agg_yr_list = os.listdir(p_j)
+
+        for k in Agg_yr_list:
+            p_k = p_j + "/"+ k
+            Data = open(p_k, 'r')
+            C = json.load(Data)
+            
+            for l in C["data"]["hoverDataList"]:
+                District = l["name"]
+                count = l["metric"][0]["count"]
+                amount = l["metric"][0]["amount"]
+                clm_3['State'].append(i)
+                clm_3['Year'].append(j)
+                clm_3['Quarter'].append(int(k.strip('.json')))
+                clm_3["District"].append(District)
+                clm_3["Transaction_Count"].append(count)
+                clm_3["Transaction_Amount"].append(amount)
+                
+df_map_trans = pd.DataFrame(clm_3)
+
+print(df_map_trans)
+
+#map_user
+path_4=r"D:\vs_code\pulse-master\data\map\user\hover\country\india\state"
+map_user_state_list=os.listdir(path_4)
+map_user_state_list
+
+clm_4= {"State": [], "Year": [], "Quarter": [], "District": [], "Registered_User": []}
+
+for i in map_user_state_list:
+    p_i = path_4 + "/" +i 
+    Agg_yr = os.listdir(p_i)
+
+    for j in Agg_yr:
+        p_j = p_i + "/" + j
+        Agg_yr_list = os.listdir(p_j)
+
+        for k in Agg_yr_list:
+            p_k = p_j + "/" + k
+            Data = open(p_k, 'r')
+            D = json.load(Data)
+
+            for l in D["data"]["hoverData"].items():
+                district = l[0]
+                registereduser = l[1]["registeredUsers"]
+                clm_4['State'].append(i)
+                clm_4['Year'].append(j)
+                clm_4['Quarter'].append(int(k.strip('.json')))
+                clm_4["District"].append(district)
+                clm_4["Registered_User"].append(registereduser)
+                
+df_map_user = pd.DataFrame(clm_4)
+
+print(df_map_user)
+
+
+#top trans
+
+path_5=r"D:\vs_code\pulse-master\data\top\transaction\country\india\state"
+top_trans_state_list=os.listdir(path_5)
+top_trans_state_list
+
+clm_5= {'State': [], 'Year': [], 'Quarter': [], 'District_Pincode': [], 'Transaction_count': [], 'Transaction_amount': []}
+
+for i in top_trans_state_list:
+    p_i = path_5 + "/" + i 
+    Agg_yr = os.listdir(p_i)
+
+    for j in Agg_yr:
+        p_j = p_i + "/" +j
+        Agg_yr_list = os.listdir(p_j)
+
+        for k in Agg_yr_list:
+            p_k = p_j + "/" + k
+            Data = open(p_k, 'r')
+            E = json.load(Data)
+            
+            for l in E['data']['pincodes']:
+                Name = l['entityName']
+                count = l['metric']['count']
+                amount = l['metric']['amount']
+                clm_5['State'].append(i)
+                clm_5['Year'].append(j)
+                clm_5['Quarter'].append(int(k.strip('.json')))
+                clm_5['District_Pincode'].append(Name)
+                clm_5['Transaction_count'].append(count)
+                clm_5['Transaction_amount'].append(amount)
+
+df_top_trans = pd.DataFrame(clm_5)
+
+df_top_trans
+
+#top user
+path_6=r'D:\vs_code\pulse-master\data\top\user\country\india\state'
+top_user_state_list=os.listdir(path_6)
+top_user_state_list
+
+clm_6 = {'State': [], 'Year': [], 'Quarter': [], 'District_Pincode': [], 'Registered_User': []}
+
+for i in top_user_state_list:
+    p_i = path_6 + "/" + i
+    Agg_yr = os.listdir(p_i)
+
+    for j in Agg_yr:
+        p_j = p_i + "/" + j
+        Agg_yr_list = os.listdir(p_j)
+
+        for k in Agg_yr_list:
+            p_k = p_j + "/" +  k
+            Data = open(p_k, 'r')
+            F = json.load(Data)
+            
+            for l in F['data']['pincodes']:
+                Name = l['name']
+                registeredUser = l['registeredUsers']
+                clm_6['State'].append(i)
+                clm_6['Year'].append(j)
+                clm_6['Quarter'].append(int(k.strip('.json')))
+                clm_6['District_Pincode'].append(Name)
+                clm_6['Registered_User'].append(registeredUser)
+                
+df_top_user = pd.DataFrame(clm_6)
+df_top_user
+
+#--------------------------->>>>>>>>>>>>>>------------------------------->>>>>>>>>>>>>>
+
+#drop dublicates
+d1 = df_Agg_Trans.drop_duplicates()
+d2 = df_Agg_user.drop_duplicates()
+d3 = df_map_trans.drop_duplicates()
+d4 = df_map_user.drop_duplicates()
+d5 = df_top_trans.drop_duplicates()
+d6 = df_top_user.drop_duplicates()
+#______________________________________________________________________________________
+
+#checking Null values
+
+null_counts = d1.isnull().sum()
+print(null_counts)
+
+null_counts = d2.isnull().sum()
+print(null_counts)
+
+null_counts = d3.isnull().sum()
+print(null_counts)
+
+null_counts = d4.isnull().sum()
+print(null_counts)
+
+null_counts = d5.isnull().sum()
+print(null_counts)
+
+null_counts = d6.isnull().sum()
+print(null_counts)
+#______________________________________________________________________________________________
+
+# connect sql server
+
+import mysql.connector
+import sqlalchemy
+from sqlalchemy import create_engine
+
+# Connect to the MySQL server
+mydb = mysql.connector.connect(
   host = "localhost",
   user = "root",
   password = "vino8799",
-  database = "phonepe_pulse_db"
+  database = "phonepe_pulse"
 )
 
 # Create a new database and use
-cursor = mydb.cursor()
+mycursor = mydb.cursor()
+mycursor.execute("CREATE DATABASE IF NOT EXISTS phonepe_pulse")
 
-SELECT = option_menu(
-    menu_title=None,
-    options=["About", "Basic insights", "Contact"],
-    icons=["bar-chart", "toggles", "at"],
-    default_index=2,
-    orientation="horizontal",
-    styles={
-        "container": {"padding": "0!important", "background-color": "white", "size": "cover"},
-        "icon": {"color": "black", "font-size": "20px"},
-        "nav-link": {"font-size": "20px", "text-align": "center", "margin": "-2px", "--hover-color": "#6F36AD"},
-        "nav-link-selected": {"background-color": "#6F36AD"}
-    }
+# Close the cursor and database connection
+mycursor.close()
+mydb.close()
 
-)
 
-if SELECT == "Basic insights":
+engine = create_engine('mysql+mysqlconnector://root:vino8799@localhost/phonepe_pulse', echo=False)
 
-    st.title("BASIC INSIGHTS")
-    # st.write("----")
-    st.subheader("Let's know some basic insights about the data")
-    options = ["--select--", "Top 10 states based on year and amount of transaction",
-               "Least 10 states based on type and amount of transaction",
-               "Top 10 mobile brands based on percentage of transaction",
-               "Top 10 Registered-users based on States and District(pincode)",
-               "Top 10 Districts based on states and amount of transaction",
-               "Least 10 Districts based on states and amount of transaction",
-               "Least 10 registered-users based on District_Pincode and states",
-               "Top 10 transactions_type based on states and transaction_amount"]
-    select = st.selectbox("Select the option", options)
+#insert table one into sql 
+df_Agg_Trans.to_sql('aggregated_transaction', engine, if_exists = 'replace', index=False,   
+                                 dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+                                       'Year': sqlalchemy.types.Integer, 
+                                       'Quater': sqlalchemy.types.Integer, 
+                                       'Transaction_type': sqlalchemy.types.VARCHAR(length=50), 
+                                       'Transaction_count': sqlalchemy.types.Integer,
+                                       'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
 
-    if select == "Top 10 states based on year and amount of transaction":
-        cursor.execute("SELECT DISTINCT State,Transaction_amount,Year,Quarter FROM top_transaction ORDER BY transaction_amount DESC LIMIT 10;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'Transaction_amount', 'Year', 'Quarter'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Top 10 states based on type and amount of transaction")
-            fig = px.bar(df, x="State", y="Transaction_amount")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
+#inser all table in to sql
 
-    elif select == "Least 10 states based on type and amount of transaction":
-        cursor.execute(
-            "SELECT DISTINCT State,Transaction_amount,Year,Quarter FROM top_transaction ORDER BY transaction_amount ASC LIMIT 10;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'Transaction_amount', 'Year', 'Quarter'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Least 10 states based on type and amount of transaction")
-            fig = px.bar(df, x="State", y="Transaction_amount")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
+# 2
+df_Agg_user.to_sql('aggregated_user', engine, if_exists = 'replace', index=False,
+                          dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+                                 'Year': sqlalchemy.types.Integer, 
+                                 'Quater': sqlalchemy.types.Integer,
+                                 'Brands': sqlalchemy.types.VARCHAR(length=50), 
+                                 'User_Count': sqlalchemy.types.Integer, 
+                                 'User_Percentage': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
 
-    elif select == "Top 10 mobile brands based on percentage of transaction":
-        cursor.execute(
-            "SELECT DISTINCT Brands,User_Percentage FROM aggregated_user ORDER BY User_Percentage DESC LIMIT 10;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['Brands', 'User_Percentage'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Top 10 mobile brands based on percentage of transaction")
-            fig = px.bar(df, x="Brands", y="User_Percentage")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
+# 3                       
+df_map_trans.to_sql('map_transaction', engine, if_exists = 'replace', index=False,
+                          dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+                                 'Year': sqlalchemy.types.Integer, 
+                                 'Quater': sqlalchemy.types.Integer, 
+                                 'District': sqlalchemy.types.VARCHAR(length=50), 
+                                 'Transaction_Count': sqlalchemy.types.Integer, 
+                                 'Transaction_Amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
 
-    elif select == "Top 10 Registered-users based on States and District(pincode)":
-        cursor.execute(
-            "SELECT DISTINCT State,District_Pincode,Registered_User FROM top_user ORDER BY State,District_Pincode DESC LIMIT 10 ;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'District_Pincode', 'RegisteredUser'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Top 10 Registered-users based on States and District(pincode)")
-            fig = px.bar(df, x="State", y="RegisteredUser")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
+# 4
+df_map_user.to_sql('map_user', engine, if_exists = 'replace', index=False,
+                   dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+                          'Year': sqlalchemy.types.Integer, 
+                          'Quater': sqlalchemy.types.Integer, 
+                          'District': sqlalchemy.types.VARCHAR(length=50), 
+                          'Registered_User': sqlalchemy.types.Integer, })
 
-    elif select == "Top 10 Districts based on states and amount of transaction":
-        cursor.execute(
-            "SELECT DISTINCT State,District,Transaction_Amount FROM map_transaction ORDER BY Transaction_Amount DESC LIMIT 10;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'District', 'Transaction_amount'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Top 10 Districts based on states and amount of transaction")
-            fig = px.bar(df, x="State", y="Transaction_amount")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
+# 5                  
+df_top_trans.to_sql('top_transaction', engine, if_exists = 'replace', index=False,
+                         dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+                                'Year': sqlalchemy.types.Integer, 
+                                'Quater': sqlalchemy.types.Integer,   
+                                'District_Pincode': sqlalchemy.types.Integer,
+                                'Transaction_count': sqlalchemy.types.Integer, 
+                                'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)})
 
-    elif select == "Least 10 Districts based on states and amount of transaction":
-        cursor.execute(
-            "SELECT DISTINCT State,District,Transaction_Amount FROM map_transaction ORDER BY Transaction_Amount ASC LIMIT 10")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'District', 'Transaction_amount'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Least 10 Districts based on states and amount of transaction")
-            fig = px.bar(df, x="State", y="Transaction_amount")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
-
-    elif select == "Least 10 registered-users based on District_Pincode and states":
-        cursor.execute(
-            "SELECT DISTINCT State,District_Pincode,Registered_User FROM top_user ORDER BY Registered_User ASC LIMIT 10 ;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'District_Pincode', 'Registered_User'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Least 10 registered-users based on Districts and states")
-            fig = px.bar(df, x="State", y="Registered_User")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
-
-    elif select == "Top 10 transactions_type based on states and transaction_amount":
-        cursor.execute(
-            "SELECT DISTINCT State,Transacion_type,Transacion_amount FROM aggregated_transaction ORDER BY Transacion_amount DESC LIMIT 10;")
-        df = pd.DataFrame(cursor.fetchall(), columns=['State', 'Transacion_type', 'Transacion_amount'])
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(df)
-        with col2:
-            st.title("Top 10 transactions_type based on states and transaction_amount")
-            fig = px.bar(df, x="State", y="Transacion_amount")
-            tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-            with tab1:
-                st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-            with tab2:
-                st.plotly_chart(fig, theme=None, use_container_width=True)
-
-if SELECT == "Contact":
-    name = " VINOTH KUMAR "
-    mail = (f'{"Mail :"}  {"vinoharish8799@gmail.com"}')
-    social_media = {"GITHUB": "https://github.com/vinothkumarpy",
-                    'LINKED_IN' :'https://www.linkedin.com/in/vinoth-kumar-s-370724281/'}
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image(r'phonepe_pulse/logo2.png')
-    with col2:
-        st.title(name)
-        st.title(mail)
-        st.subheader("An Aspiring DATA-ANALYST.... !")
-    # st.write("#")
-    cols = st.columns(len(social_media))
-    for index, (platform, link) in enumerate(social_media.items()):
-        cols[index].write(f"[{platform}]({link})")
-
-if SELECT == "About":
-    col1,col2 = st.columns([3,3],gap="medium")
-    with col1:
-        st.write(" ")
-        st.write(" ")
-        st.markdown("### :violet[About PhonePe Pulse:] ")
-        st.write("##### BENGALURU, India, On Sept. 3, 2021 PhonePe, India's leading fintech platform, announced the launch of PhonePe Pulse, India's first interactive website with data, insights and trends on digital payments in the country. The PhonePe Pulse website showcases more than 2000+ Crore transactions by consumers on an interactive map of India. With  over 45% market share, PhonePe's data is representative of the country's digital payment habits.")
-        
-        st.write("##### The insights on the website and in the report have been drawn from two key sources - the entirety of PhonePe's transaction data combined with merchant and customer interviews. The report is available as a free download on the PhonePe Pulse website and GitHub.")
-        
-        st.markdown("### :violet[About PhonePe:] ")
-        st.write("##### PhonePe is India's leading fintech platform with over 300 million registered users. Using PhonePe, users can send and receive money, recharge mobile, DTH, pay at stores, make utility payments, buy gold and make investments. PhonePe forayed into financial services in 2017 with the launch of Gold providing users with a safe and convenient option to buy 24-karat gold securely on its platform. PhonePe has since launched several Mutual Funds and Insurance products like tax-saving funds, liquid funds, international travel insurance and Corona Care, a dedicated insurance product for the COVID-19 pandemic among others. PhonePe also launched its Switch platform in 2018, and today its customers can place orders on over 600 apps directly from within the PhonePe mobile app. PhonePe is accepted at 20+ million merchant outlets across Bharat") 
+# 6
+df_top_user.to_sql('top_user', engine, if_exists = 'replace', index=False,
+                   dtype={'State': sqlalchemy.types.VARCHAR(length=50), 
+                          'Year': sqlalchemy.types.Integer, 
+                          'Quater': sqlalchemy.types.Integer,                           
+                          'District_Pincode': sqlalchemy.types.Integer, 
+                          'Registered_User': sqlalchemy.types.Integer,})
