@@ -12,7 +12,7 @@ from streamlit_player import st_player
 from streamlit import components
 import base64
 
-icon = Image.open(r"E:\projects\phone_pe\phonepe-logo-icon.png")
+icon = Image.open(r"D:\vk_project\phone_pe\phonepe-logo-icon.png")
 st.set_page_config(page_title= "Phonepe Pulse Data Visualization | By Vinoth Kumar",
                    page_icon= icon,
                    layout= "wide",
@@ -300,4 +300,3 @@ if SELECT == "About":
     st.write("##### Bengaluru, December 6th, 2017: PhonePe, Indias fastest growing digital payments platform, today announced two big milestones.The market leader in UPI-based merchant transactions processed over 1 million daily transactions, worth over 100 Crores every day in November.PhonePe has achieved a staggering Total Payments Volume (TPV) annual run rate of INR 40,000 Crore within 14 months of market launch. This is the fastest ramp up seen in Indias digital payments space to date. PhonePes monthly transactions have grown ""8200 %"" since November last year, fueled largely by exponential growth in its online merchant, bill payment and peer to peer transactions. The PhonePe mobile app has been downloaded by over 55 million Indians so far.")
     st.write("##### Sameer Nigam, Co-founder & CEO, PhonePe said, “We believe India is at the cusp of a major digital payments revolution, and PhonePe has been an important catalyst driving this change across the country. In line with the national agenda of Digital India, we are constantly innovating to bring more use cases to our platform and becoming the one-stop payments solution for all our customer needs. We are humbled to hit the million transactions a day milestone in such a short span of time. We are currently processing INR 40,000 Cr worth of digital payments annually, and are targeting to double this metric by March, 2018..")
     st.write("##### About PhonePe .PhonePe is a Flipkart company and the fastest growing digital payments platform in India. With over 55 million installs, the PhonePe App drives the maximum number of UPI transactions in India. Using PhonePe users can send and receive money, recharge mobile, DTH, datacards, make utility payments, pay their credit card bills and shop online and offline.for more details: media@phonepe.com")
-    
