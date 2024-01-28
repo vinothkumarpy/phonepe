@@ -42,12 +42,7 @@ The data used in this project includes transaction and user data obtained from P
 
 Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please create an issue or submit a pull request.
 
-## License
-
-- This project is `Un-Licensed`
-- Feel free to use, modify, and distribute this project as needed.
-
 ## Acknowledgements
 
 - Special thanks to the creators and maintainers of the libraries and tools used in this project.
-- If you have any questions or need assistance, please don't hesitate to [contact me](https://www.linkedin.com/in/sathishkumarraj/).
+- If you have any questions or need assistance, please don't hesitate to [contact me](https://www.linkedin.com/in/vinoth-kumar-s-370724281/).
