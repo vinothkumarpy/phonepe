@@ -8,7 +8,7 @@ PhonePe Pulse is a data visualization and exploration tool that provides insight
 
 # Home
 
-![image](https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/91b9515d-fa65-40b5-8acc-ec96dcb8c715)
+![image]([https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/91b9515d-fa65-40b5-8acc-ec96dcb8c715](https://github.com/vinothkumarpy/phonepe/blob/main/HOME%20STREAMLIT.PNG))
 
 # Top Charts
 
