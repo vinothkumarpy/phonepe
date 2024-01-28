@@ -6,30 +6,6 @@
 
 PhonePe Pulse is a data visualization and exploration tool that provides insights into transaction and user data. It allows users to analyze and visualize various aspects of PhonePe's transaction and user statistics.
 
-# Home
-
-![image]([https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/91b9515d-fa65-40b5-8acc-ec96dcb8c715](https://github.com/vinothkumarpy/phonepe/blob/main/HOME%20STREAMLIT.PNG))
-
-# Top Charts
-
-## `Transaction`
-
-![image](https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/caf9828b-5f4a-4692-8938-6f284e97ecfb)
-
-## `Users`
-
-![image](https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/29cccd84-c39b-45df-b0e7-0fa844ae13f9)
-
-#  Data Visualization
-
-## `Transaction`
-
-![image](https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/de3b7e73-6dfa-4910-923c-a9f916672cbc)
-
-## `Users`
-
-![image](https://github.com/sathishkumarraj/PhonePe_pulse/assets/116692780/b17c0627-9808-4250-8bb6-529bf5a7d641)
-
 ## Installation
 
 1. **Clone the repository:**
