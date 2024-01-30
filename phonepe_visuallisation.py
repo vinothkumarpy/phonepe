@@ -9,7 +9,8 @@ from streamlit_option_menu import option_menu
 from PIL import Image
 import streamlit as st
 from streamlit_player import st_player
-
+from streamlit import components
+import base64
 
 icon = Image.open(r"D:\vk_project\phone_pe\phonepe-logo-icon.png")
 
@@ -20,6 +21,13 @@ st.set_page_config(page_title= "Phonepe Pulse Data Visualization | By Vinoth Kum
                    initial_sidebar_state= "expanded",
                    menu_items={'About': """# This dashboard app is created by *Vinoth Kumar*!
                                         Data has been cloned from Phonepe Pulse Github Repo"""})
+def setting_bg():
+    st.markdown(f""" <style>.stApp {{
+                        background: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-wallpaper-background_58702-3979.jpg?size=626&ext=jpg");
+                        background-size: cover}}
+                     </style>""", unsafe_allow_html=True)
+
+setting_bg()
                                  
 mydb = mysql.connect(
   host = "localhost",
@@ -286,16 +294,14 @@ if SELECT == "Basic insights":
                 with tab2:
                     st.plotly_chart(fig, theme=None, use_container_width=True)
 
-#__________________________________________________________________________________________________________________________________________________________
 
-      #Details tab
         with tab2:
             Year = st.sidebar.slider("**Year**", min_value=2018, max_value=2022)
             Quarter = st.sidebar.slider("Quarter", min_value=1, max_value=4)
             Type = st.sidebar.selectbox("**Type**", ("Transactions", "Users"))
             col1, col2 = st.columns(2)
 
-            # Basic insights - TRANSACTIONS
+            # EXPLORE DATA - TRANSACTIONS
             if Type == "Transactions":
                     # Overall State Data - TRANSACTIONS AMOUNT - INDIA MAP
             
@@ -360,7 +366,7 @@ if SELECT == "Basic insights":
                                  color_continuous_scale=px.colors.sequential.Agsunset)
                     st.plotly_chart(fig, use_container_width=True)
 
-            # Basic insights  - USERS
+            # EXPLORE DATA - USERS
             if Type == "Users":
 
                 # BAR CHART TOTAL UERS - DISTRICT WISE DATA
