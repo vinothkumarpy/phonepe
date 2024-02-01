@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 3. **Run the desired script:**
 ```bash
-streamlit run phonepe.py
+streamlit run d:/vk_project/phone_pe/phone_pe_visu.py
 ```
 4. **The application will open in your browser:**
    
